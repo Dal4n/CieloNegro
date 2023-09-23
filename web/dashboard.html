@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Cielo Negro</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="style/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="estilos/styles.css" rel="stylesheet" type="text/css"/>
+        <link href="iconos/fontawesome/css/all.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <div class="container-fluid">
+
+            <div class="cont">
+                <header class="Header">
+                    <div class="logo">
+                        <img src="img/logo.png" alt="logo" class="img-fluid">
+                    </div>
+                    <div class="infoUser">
+                        <p>Usuario: <span id="nombreUser"></span></p>
+                    </div>
+                    <button type="button" id="btnCerrar" class="btn btn-danger btnCerrar" style="height: 34px">Cerrar Sesión</button>
+
+                </header>
+                <div class="Productos card shadow col-lg-4" id="cafes">
+                    <div class="card-header">
+                        <h2 class="text-uppercase text-center">Productos</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="productos">
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="Venta card shadow" id="cafes">
+                    <div class="card-header">
+                        <h2 class="text-uppercase text-center">Venta</h2>
+                    </div>
+                    <div class="card-body overflow-x-auto">
+                        <div id="venta">
+                            <table class="table table-striped" style="height: 200px; overflow-y: auto;">
+                                <thead id="thead">
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Total</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaProductos">
+                                    <!-- Aquí se insertarán las filas de productos dinámicamente -->
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="Resumen card shadow" id="cafes">
+                    <div class="card-header">
+                        <h2 class="text-uppercase text-center">Resumen de venta</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="resumen">
+                            <h3 id="promo">Promoción</h3>
+                            <p id="verGll">Galletas: <span id="galletas"></span></p>
+                            <P id="verPaquete">Paquete de Galletas: <span id="paquetes"></span></P>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 id="verTotal">Total: <span id="spnTotal"></span></h2>
+                                <button type="button" class="btn btn-outline-primary" id="btnComprar">Realizar Venta</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="style/js/bootstrap.min.js"></script>
+        <script src="iconos/fontawesome/js/all.min.js"></script>
+        <script src="js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </body>
+</html>
