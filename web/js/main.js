@@ -87,7 +87,7 @@ function agregarProducto(index) {
   document.getElementById("resumen").style.display = "block";
   document.getElementById("thead").style.display = "table-header-group";
   document.getElementById("tablaProductos").style.display = "table-header-group";
-  // Comprobar si el producto ya está en la lista
+  
   if (proSel[cafes[index].nombre]) {
 
     proSel[cafes[index].nombre].cantidad++;
@@ -104,7 +104,6 @@ function agregarProducto(index) {
     }
   }
 
-  // Actualiza la tabla
   actualizarTabla();
 
 }
