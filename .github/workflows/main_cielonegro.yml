@@ -21,7 +21,7 @@ jobs:
 
       - name: Install Ant
         run: |
-          Invoke-WebRequest -Uri https://downloads.apache.org/ant/binaries/apache-ant-1.10.12-bin.zip -OutFile ant.zip
+          Invoke-WebRequest -Uri https://downloads.apache.org/ant/binaries/apache-ant-1.10.13-bin.zip -OutFile ant.zip
           Expand-Archive ant.zip -DestinationPath ant
           $env:ANT_HOME = "${PWD}\ant\apache-ant-1.10.12"
           $env:PATH += ";${env:ANT_HOME}\bin"
