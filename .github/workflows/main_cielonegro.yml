@@ -30,7 +30,7 @@ jobs:
         run: ant clean dist
 
       - name: Rename artifact file to root.war
-        run: mv '${{ github.workspace }}/dist/LaboratorioOMEGA.war' '${{ github.workspace }}/dist/ROOT.war'
+        run: mv '${{ github.workspace }}/dist/CieloNegro.war' '${{ github.workspace }}/dist/ROOT.war'
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
