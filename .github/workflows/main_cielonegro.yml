@@ -56,6 +56,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'cafecielonegro'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_0eb1c0c780b44a3d81280bb747d7b93b }}
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_37029B0E6FD849719D30726C30C44446 }}
           package: '*.war'
