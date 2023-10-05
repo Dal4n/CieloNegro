@@ -1,0 +1,61 @@
+name: Build CAFE
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+
+      - name: Set up Java version
+        uses: actions/setup-java@v1
+        with:
+          java-version: '20'
+
+      - name: Install Ant
+        run: |
+          Invoke-WebRequest -Uri https://downloads.apache.org/ant/binaries/apache-ant-1.10.13-bin.zip -OutFile ant.zip
+          Expand-Archive ant.zip -DestinationPath ant
+          $env:ANT_HOME = "${PWD}\ant\apache-ant-1.10.13"
+          $env:PATH += ";${env:ANT_HOME}\bin"
+
+      - name: Build with Ant
+        run: ant clean dist
+
+      - name: Rename artifact file to root.war
+        run: mv '${{ github.workspace }}/dist/CieloNegro.war' '${{ github.workspace }}/dist/ROOT.war'
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/dist/*.war'
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: java-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'cielonegro'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_45AC483932614C9C9264DD53A78301D2 }}
+          package: '*.war'
