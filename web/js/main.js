@@ -25,7 +25,6 @@ function inicializar() {
 
   let usuario = (localStorage.getItem("usuario") != "" ? JSON.parse(localStorage.getItem("usuario")) : "" );
   
-
   document.getElementById("nombreUser").textContent = usuario.nombre;
 
 }
@@ -46,13 +45,12 @@ async function getCafes(url) {
 
     return data;
   } catch (error) {
-    console.error(`Error al obtener los datos: ${error.message}`);
+    console.error(`Error: ${error.message}`);
     throw error;
   }
 }
 
 function crearCards() {
-
   let cards = "";
 
   cafes.forEach(item => {
@@ -71,7 +69,6 @@ function crearCards() {
   });
 
   document.getElementById("productos").innerHTML = cards;
-
 }
 
 let proSel = {};
@@ -81,7 +78,9 @@ function agregarProducto(index) {
   if ([0, 1, 2].includes(index)) {
     document.getElementById("verGll").style.display = "block";
   } else {
+    
     document.getElementById("verPaquete").style.display = "block";
+    
   }
 
   document.getElementById("resumen").style.display = "block";
@@ -89,10 +88,8 @@ function agregarProducto(index) {
   document.getElementById("tablaProductos").style.display = "table-header-group";
   
   if (proSel[cafes[index].nombre]) {
-
     proSel[cafes[index].nombre].cantidad++;
     proSel[cafes[index].nombre].galletas += cafes[index].promo.cantGalletas;
-
   } else {
     proSel[cafes[index].nombre] = {
       precio: cafes[index].precio,
@@ -105,7 +102,6 @@ function agregarProducto(index) {
   }
 
   actualizarTabla();
-
 }
 
 function actualizarTabla() {
@@ -113,7 +109,7 @@ function actualizarTabla() {
   tblPro.innerHTML = "";
 
   if (JSON.stringify(proSel) != "{}") {
-    // Recorre el registro de productos y agrega filas a la tabla
+    
     for (const prod in proSel) {
 
       const producto = proSel[prod];
@@ -121,49 +117,45 @@ function actualizarTabla() {
       const fila = document.createElement("tr");
 
       // Mostrar el producto, precio, cantidad y total
-      const cldProducto = document.createElement("td");
-      cldProducto.textContent = prod;
+      const cldPrdt = document.createElement("td");
+      cldPrdt.textContent = prod;
 
       const cldPrecio = document.createElement("td");
       cldPrecio.textContent = `$${producto.precio}`;
 
-      const cldCantidad = document.createElement("td");
+      const cldCant = document.createElement("td");
 
       // Crea un campo de entrada (input) para la cantidad
-      const cantidadInput = document.createElement("input");
-      cantidadInput.type = "number";
-      cantidadInput.value = producto.cantidad;
-      cantidadInput.classList.add("form-control");
-      cantidadInput.min = 0;
-      cantidadInput.id = "input" + prod;
+      const cantInput = document.createElement("input");
+      cantInput.type = "number";
+      cantInput.value = producto.cantidad;
+      cantInput.classList.add("form-control");
+      cantInput.min = 0;
+      cantInput.id = "input" + prod;
 
-      cantidadInput.addEventListener("change", (e) => {
-        // Obtiene la cantidad actual
-        const nuevaCantidad = parseInt(cantidadInput.value, 10);
+      cantInput.addEventListener("change", (e) => {
 
-        // Calcula la diferencia entre la cantidad anterior y la nueva cantidad
+        const nuevaCantidad = parseInt(cantInput.value, 10);
+
         const diferencia = producto.cantidad - nuevaCantidad;
 
         producto.cantidad = nuevaCantidad;
 
         if (diferencia > 0) {
-          // La cantidad disminuyó, resta las galletas correspondientes
           if (producto.cantidad >= 0) {
             producto.galletas -= diferencia * producto.promo;
           }
         } else if (diferencia < 0) {
-          // La cantidad aumentó, suma las galletas correspondientes
           producto.galletas += Math.abs(diferencia) * producto.promo;
         }
 
-        // Actualiza la cantidad anterior del producto con la nueva cantidad actual
         cantidadAnterior = nuevaCantidad;
 
         actualizarTabla();
 
       });
 
-      cldCantidad.appendChild(cantidadInput);
+      cldCant.appendChild(cantInput);
 
       const celdaTotal = document.createElement("td");
       celdaTotal.textContent = `$${producto.precio * producto.cantidad}`;
@@ -171,26 +163,21 @@ function actualizarTabla() {
 
       const celdaAcciones = document.createElement("td");
 
-      // Crea un botón para eliminar el producto
-      const botonEliminar = document.createElement("button");
-      botonEliminar.textContent = "Eliminar";
-      botonEliminar.classList.add("btn", "btn-outline-danger")
-      botonEliminar.addEventListener("click", () => {
+      const btnEliminar = document.createElement("button");
+      btnEliminar.textContent = "Eliminar";
+      btnEliminar.classList.add("btn", "btn-outline-danger")
+      btnEliminar.addEventListener("click", () => {
         // Elimina el producto del registro
         delete proSel[prod];
         actualizarTabla();
-
-        // if (prod == "Café Cappuccino") {
-        //   document.getElementById("verPaquete").style.display = "none";
-        // }
       });
 
-      celdaAcciones.appendChild(botonEliminar);
+      celdaAcciones.appendChild(btnEliminar);
 
       // Agrega las celdas a la fila
-      fila.appendChild(cldProducto);
+      fila.appendChild(cldPrdt);
       fila.appendChild(cldPrecio);
-      fila.appendChild(cldCantidad);
+      fila.appendChild(cldCant);
       fila.appendChild(celdaTotal);
       fila.appendChild(celdaAcciones);
 
@@ -214,12 +201,16 @@ function calcularGalletas() {
   let sumaG = 0;
   let sumaP = 0;
 
-  for (const c in proSel) {
-    if (c != "Café Cappuccino") {
+  for (const c in proSel) {    
+
+    if (proSel[c].cafe.id != 4) {
       sumaG += proSel[c].galletas;
+      document.getElementById("verGll").style.display = "block";
     } else {
       sumaP += proSel[c].galletas;
+      document.getElementById("verPaquete").style.display = "block";
     }
+    
   }
 
   if (sumaG == 0) {
@@ -234,10 +225,12 @@ function calcularGalletas() {
     document.getElementById("promo").style.display = "none";
   }
 
+  
+
   document.getElementById("galletas").innerHTML = sumaG;
   document.getElementById("paquetes").innerHTML = sumaP;
 
-  return [sumaG, sumaP]
+  return [sumaG, sumaP];
 }
 
 function caclularTotal() {
