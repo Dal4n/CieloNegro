@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy WAR app to Azure Web App - cielonegro
+name: Build CAFE
 
 on:
   push:
@@ -15,20 +12,31 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
 
       - name: Set up Java version
         uses: actions/setup-java@v1
         with:
-          java-version: '17'
+          java-version: '20'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Install Ant
+        run: |
+          Invoke-WebRequest -Uri https://downloads.apache.org/ant/binaries/apache-ant-1.10.13-bin.zip -OutFile ant.zip
+          Expand-Archive ant.zip -DestinationPath ant
+          $env:ANT_HOME = "${PWD}\ant\apache-ant-1.10.13"
+          $env:PATH += ";${env:ANT_HOME}\bin"
+
+      - name: Build with Ant
+        run: ant clean dist
+
+      - name: Rename artifact file to root.war
+        run: mv '${{ github.workspace }}/dist/CieloNegro.war' '${{ github.workspace }}/dist/ROOT.war'
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: '${{ github.workspace }}/dist/*.war'
 
   deploy:
     runs-on: windows-latest
