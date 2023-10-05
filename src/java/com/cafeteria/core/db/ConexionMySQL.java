@@ -19,11 +19,10 @@ public class ConexionMySQL {
 //        String url = "jdbc:mysql://127.0.0.1:3306/"+ bd + "?useSSL=false&useUnicode=true&characterEncoding=utf-8";
         
         //Base de datos Servidor Azure
-        String user = "cafeteriaPrueba";            
+        String user = "rootD";            
         String password = "Landin1234";        
         String bd = "cafeteria";        
         String url = "jdbc:mysql://cafeteria.mysql.database.azure.com:3306/" + bd + "?useSSL=true";
-                   
         
         try {
             
