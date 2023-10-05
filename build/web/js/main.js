@@ -27,6 +27,8 @@ function inicializar() {
   
   document.getElementById("nombreUser").textContent = usuario.nombre;
 
+  (usuario == "" ? window.location="index.html" : "");
+
 }
 
 async function getCafes(url) {
