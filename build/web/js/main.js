@@ -120,7 +120,8 @@ function actualizarTabla() {
 
       // Mostrar el producto, precio, cantidad y total
       const cldPrdt = document.createElement("td");
-      cldPrdt.textContent = prod;
+      cldPrdt.textContent = prod + " - " + proSel[prod].tamanio;
+      cldPrdt.style.fontSize = "14px";
 
       const cldPrecio = document.createElement("td");
       cldPrecio.textContent = `$${producto.precio}`;
